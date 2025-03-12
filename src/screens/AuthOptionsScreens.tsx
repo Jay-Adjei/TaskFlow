@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RootStackParamList } from './NavigationTypes';
 
 const AuthOptionsScreen: React.FC = () => {
@@ -15,10 +15,14 @@ const AuthOptionsScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container} className="text-blue-100 font-bold text-4xl">
-      <Text style={styles.title}>Welcome to TaskFlow</Text>
-      <Button title="Sign In" onPress={handleSignIn} />
-      <Button title="Sign Up" onPress={handleSignUp} />
+    <View style={styles.container}>
+      <Text className="text-2xl font-bold ">Welcome to TaskFlow</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <Text style={styles.buttonText}>Sign In</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -30,9 +34,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  title: {
-    fontSize: 24,
-    marginBottom: 32,
+  button: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 

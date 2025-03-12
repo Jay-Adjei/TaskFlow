@@ -1,26 +1,54 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+
 import { RootStackParamList } from './NavigationTypes';
 
 const UnloadingScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const [text, setText] = useState('');
+  const [showCursor, setShowCursor] = useState(true);
+  
+  const fullText = 'Taskflow'; // The correct text
+  const typingSpeed = 150; // Speed of typing effect
+
   useEffect(() => {
+    let index = 0;
+
+    // Typewriter effect: Use slice to avoid "undefined"
+    const typingInterval = setInterval(() => {
+      if (index < fullText.length) {
+        setText(fullText.slice(0, index + 1)); // Slices from 0 to (index+1)
+        index++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, typingSpeed);
+
+    // Blinking cursor effect
+    const cursorBlinkInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    // Auto navigation after 10s
     const timer = setTimeout(() => {
       navigation.navigate('AuthenticationOptions');
-    }, 10000);
+    }, 5000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearInterval(typingInterval);
+      clearInterval(cursorBlinkInterval);
+      clearTimeout(timer);
+    };
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <View className="flex">
-        <Text style={styles.text} className="typewritter whitespace-nowrap">
-          Taskflow
-        </Text>
-      </View>
+      <Text style={styles.text}>
+        {text}
+        <Text style={[styles.cursor, { opacity: showCursor ? 1 : 0 }]}>|</Text>
+      </Text>
     </View>
   );
 };
@@ -34,9 +62,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginInline: 'auto',
-    borderRightWidth: 1,
-    borderRightColor: '#000',
+  },
+  cursor: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
   },
 });
 
