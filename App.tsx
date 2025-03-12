@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import './global.css';
 import AuthOptionsScreen from '~/screens/AuthOptionsScreens';
 import UnloadingScreen from '~/screens/UnloadingScreen';
+import SignUpScreen from '~/screens/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App() {
           component={AuthOptionsScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
