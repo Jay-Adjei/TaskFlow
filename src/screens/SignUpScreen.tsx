@@ -17,16 +17,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const SignUpScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#2563EB' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }}
+          className="flex flex-col">
           {/* "Hi, there" text positioned outside the white panel */}
-          <View className="absolute bottom-[70%] left-0 right-0 mb-10 ml-5">
-            <Text className="text-4xl font-bold text-white">Hi there</Text>
-            <Text className="text-xl font-semibold text-white">Welcome to this app</Text>
+          <View
+            className="mb-10 h-full w-full"
+            style={{
+              backgroundColor: '#2563EB',
+            }}>
+            <View className="flex h-[50%] flex-col justify-center pl-5">
+              <Text className="text-4xl font-bold text-white">Hi there</Text>
+              <Text className="text-xl font-semibold text-white">Welcome to this app</Text>
+            </View>
           </View>
+
           {/* White login panel occupies the bottom 60% */}
           <View className="absolute bottom-0 h-[70%] w-full rounded-tl-[100%] bg-white p-8">
             <Text className="mb-4 text-2xl font-bold">Sign Up</Text>
