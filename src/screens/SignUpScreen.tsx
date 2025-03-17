@@ -62,7 +62,7 @@ const SignUpScreen = () => {
               </Text>
               <View className=" flex flex-row items-center justify-center gap-3">
                 <Text>Already have an aacount?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                   <Text className="text-blue-500">Sign In</Text>
                 </TouchableOpacity>
               </View>

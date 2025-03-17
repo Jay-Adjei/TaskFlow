@@ -2,6 +2,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { RootStackParamList } from './NavigationTypes';
+import { TextInput } from 'react-native-paper';
 
 const AuthOptionsScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -16,7 +17,7 @@ const AuthOptionsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text className="text-2xl font-bold mb-4">Welcome to TaskFlow</Text>
+      <Text className="mb-4 text-2xl font-bold">Welcome to TaskFlow</Text>
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
