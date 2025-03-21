@@ -1,3 +1,5 @@
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useState } from 'react';
 import {
   Text,
   TextInput,
@@ -10,11 +12,37 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from './NavigationTypes';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { RootStackParamList } from './NavigationTypes';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from 'lib/firebaseConfig';
+
 const SignUpScreen = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [signedIn, setSignedIn] = useState(false); 
+  
+  const signUp = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(auth, email, password);
+      if (user) {
+        console.log('Successfully signed up:', user);
+        alert('Sign up successful');
+      }
+    } catch (error: any) {
+      console.log(error);
+      alert('Sign in failed:' + error.message);
+    }
+    finally {
+      setEmail('');
+      setPassword('');
+      setFirstName('');
+      setLastName('');
+    }
+  };
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -43,26 +71,34 @@ const SignUpScreen = () => {
               <TextInput
                 placeholder="First Name"
                 className="w-full rounded-lg border-2 border-gray-300 p-4"
+                onChangeText={(text) => setFirstName(text)}
+                value={firstName}
               />
               <TextInput
                 placeholder="Last Name"
                 className="w-full rounded-lg border-2 border-gray-300 p-4"
+                onChangeText={(text) => setLastName(text)}
+                value={lastName}
               />
               <TextInput
                 placeholder="Enter Email"
                 className="w-full rounded-lg border-2 border-gray-300 p-4"
+                onChangeText={(text) => setEmail(text)}
+                value={email}
               />
               <TextInput
                 secureTextEntry
                 placeholder="Enter Password"
                 className="w-full rounded-lg border-2 border-gray-300 p-4"
+                onChangeText={(text) => setPassword(text)}
+                value={password}
               />
-              <Text style={styles.signUpButton} onPress={() => navigation.navigate('Home')}>
+              <Text style={styles.signUpButton} onPress={() => signUp()}>
                 Sign Up
               </Text>
               <View className=" flex flex-row items-center justify-center gap-3">
                 <Text>Already have an aacount?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                   <Text className="text-blue-500">Sign In</Text>
                 </TouchableOpacity>
               </View>

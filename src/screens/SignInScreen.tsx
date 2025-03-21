@@ -1,5 +1,10 @@
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { useState } from 'react';
 import {
   Text,
@@ -14,15 +19,35 @@ import { TextInput, Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { RootStackParamList } from './NavigationTypes';
+import { auth } from 'lib/firebaseConfig';
 
 const SignInScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [revealPassword, setRevealPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const handleReveal = () => {
     setRevealPassword((prev) => !prev);
   };
   const handleGoogleSignIn = async () => {
     console.log('Google sign in');
+  };
+
+  const signIn = async () => {
+    const user = await signInWithEmailAndPassword(auth, email, password);
+    try {
+      if (user) {
+        console.log('Successfully signed in:', user);
+        alert('Sign in successful');
+      }
+    } catch (error:any) {
+      console.log(error);
+      alert('Sign in failed:' + error.message);
+    }
+    finally {
+      setEmail('');
+      setPassword('');
+    }
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -55,6 +80,8 @@ const SignInScreen = () => {
                     mode="outlined"
                     label="Email"
                     style={{ minWidth: '100%', height: 50 }} // Full width, fixed height
+                    onChangeText={(text) => setEmail(text)}
+                    value={email}
                   />
                 </View>
 
@@ -63,6 +90,8 @@ const SignInScreen = () => {
                     mode="outlined"
                     label="Password"
                     secureTextEntry={!revealPassword}
+                    onChangeText={(text) => setPassword(text)}
+                    value={password}
                     right={
                       <TextInput.Icon
                         icon={revealPassword ? 'eye-off' : 'eye'}
@@ -83,7 +112,7 @@ const SignInScreen = () => {
               <Text
                 className="min-w-full shadow-xl"
                 style={styles.signUpButton}
-                onPress={() => navigation.navigate('Home')}>
+                onPress={() => signIn()}>
                 sign In
               </Text>
               <Text className="text-center text-gray-500">Or continue with</Text>
