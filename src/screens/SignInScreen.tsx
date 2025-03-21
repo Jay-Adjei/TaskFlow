@@ -40,13 +40,13 @@ const SignInScreen = () => {
         console.log('Successfully signed in:', user);
         alert('Sign in successful');
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
       alert('Sign in failed:' + error.message);
-    }
-    finally {
+    } finally {
       setEmail('');
       setPassword('');
+      navigation.navigate('Home');
     }
   };
   return (
