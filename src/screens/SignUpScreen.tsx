@@ -13,9 +13,8 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { RootStackParamList } from './NavigationTypes';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from 'lib/firebaseConfig';
 
 const SignUpScreen = () => {
@@ -23,27 +22,32 @@ const SignUpScreen = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [signedIn, setSignedIn] = useState(false); 
-  
+  const [signedIn, setSignedIn] = useState(false);
+
   const signUp = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
       if (user) {
+        await updateProfile(user, {
+          displayName: firstName,
+        });
         console.log('Successfully signed up:', user);
         alert('Sign up successful');
       }
     } catch (error: any) {
       console.log(error);
-      alert('Sign in failed:' + error.message);
-    }
-    finally {
+      alert('Sign up failed: ' + error.message);
+    } finally {
       setEmail('');
       setPassword('');
       setFirstName('');
       setLastName('');
     }
   };
+
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <KeyboardAvoidingView
@@ -96,8 +100,8 @@ const SignUpScreen = () => {
               <Text style={styles.signUpButton} onPress={() => signUp()}>
                 Sign Up
               </Text>
-              <View className=" flex flex-row items-center justify-center gap-3">
-                <Text>Already have an aacount?</Text>
+              <View className="flex flex-row items-center justify-center gap-3">
+                <Text>Already have an account?</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
                   <Text className="text-blue-500">Sign In</Text>
                 </TouchableOpacity>
@@ -122,4 +126,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
 });
+
 export default SignUpScreen;

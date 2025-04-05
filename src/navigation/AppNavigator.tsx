@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
-        headerShown: false,
+      headerShown: false,
       tabBarIcon: ({ color, size }) => {
         let iconName;
 
@@ -25,9 +25,11 @@ const TabNavigator = () => (
           iconName = 'home';
         } else if (route.name === 'Another') {
           iconName = 'list';
+        } else {
+          iconName = 'help'; // Default icon name
         }
 
-        return <Ionicons name="menu" size={size} color={color} />;
+        return <Ionicons name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: 'tomato',
       tabBarInactiveTintColor: 'gray',
@@ -39,16 +41,16 @@ const TabNavigator = () => (
 
 const AppNavigator = () => (
   <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name="Unloading" component={UnloadingScreen} options={{ headerShown: false }} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Unloading" component={UnloadingScreen} />
       <Stack.Screen
         name="AuthenticationOptions"
         component={AuthOptionsScreen}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="Home" component={TabNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
 );
